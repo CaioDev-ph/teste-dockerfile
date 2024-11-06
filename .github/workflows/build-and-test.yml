@@ -1,0 +1,38 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Frontend Image
+        run: docker build -t myapp-frontend -f ./frontend/Dockerfile ./frontend
+
+      - name: Run Frontend Tests
+        run: docker run myapp-frontend npm test
+
+  build-and-test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Backend Image
+        run: docker build -t myapp-backend -f ./backend/Dockerfile ./backend
+
+      - name: Run Backend Tests
+        run: docker run myapp-backend npm test
