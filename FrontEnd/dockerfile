@@ -1,0 +1,21 @@
+# Usar imagem base node:14-alpine para leveza
+FROM node:14-alpine
+
+# Definir diretório de trabalho
+WORKDIR /app
+
+# Copiar package.json e instalar dependências
+COPY package*.json ./
+RUN npm install
+
+# Copiar o restante do código
+COPY . .
+
+# Construir o projeto
+RUN npm run build
+
+# Expor a porta 3000 para acessar o front-end
+EXPOSE 3000
+
+# Comando para iniciar a aplicação
+CMD ["npm", "start"]
